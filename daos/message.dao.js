@@ -20,7 +20,13 @@ function listByQueue(cb, connection, sql) {
     });
 }
 
+function deleteQueue(cb, connection, queue, id) {
+    connection.query('DELETE FROM ?? WHERE id = ?', [queue, id], function (error) {
+        cb(error);
+    });
+}
 
 module.exports = {
+    deleteQueue: deleteQueue,
     listByQueue: listByQueue
 };
