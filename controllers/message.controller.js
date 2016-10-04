@@ -4,6 +4,27 @@ var log = require('../services/log.service');
 var messageDao = require('../daos/message.dao');
 var filterService = require('../services/filter.service');
 
+function update(req, res) {
+
+    if (!req.body.status || (req.body.status != 'buried' && req.body.status != 'ready')) {
+        return res.send(400, {error: 'body should have status with \'buried\' or \'ready\' values'});
+    }
+
+    var message = {
+        id: req.params.message_id,
+        status: req.body.status,
+        queue: req.params.queue
+    };
+
+    messageDao.update(function (err) {
+        if (!err) {
+            res.send(204);
+        } else {
+            res.send(500);
+        }
+    }, req.dataSource, message);
+}
+
 function listByQueue(req, res) {
 
     var sql = filterService(req.query, req.params.queue);
@@ -64,5 +85,6 @@ function enqueue(req, res) {
 
 module.exports = {
     listByQueue: listByQueue,
-    enqueue: enqueue
+    enqueue: enqueue,
+    update: update
 };
