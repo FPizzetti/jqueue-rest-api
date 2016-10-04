@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports.createRoutes = function (server) {
+module.exports = function (server) {
 
 };
