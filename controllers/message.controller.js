@@ -7,7 +7,7 @@ function listByQueue(req, res) {
 
     var params = req.params;
 
-    log.trace('listing messages for queue:', queue);
+    log.trace('listing messages for queue:', params.queue);
 
     messageDao.listByQueue(function (err, messageList) {
         if (!err) {
