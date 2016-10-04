@@ -1,5 +1,11 @@
 'use strict';
 
+function update(cb, connection, message) {
+    connection.query('UPDATE ?? SET status = ? WHERE id = ?', [message.queue, message.status, message.id], function (error) {
+        cb(error);
+    });
+}
+
 function listByQueue(cb, connection, sql) {
     var messageList = [];
     console.log('sql', sql);
@@ -41,6 +47,7 @@ function getById(cb, connection, queue, id) {
 }
 
 module.exports = {
+    update: update,
     getById: getById,
     deleteQueue: deleteQueue,
     listByQueue: listByQueue
