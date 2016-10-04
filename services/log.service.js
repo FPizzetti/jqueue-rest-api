@@ -2,5 +2,6 @@
 const bunyan = require('bunyan');
 
 module.exports = bunyan.createLogger({
-    name: 'jqueue-rest-api'
+    name: 'jqueue-rest-api',
+    level: 10
 });
