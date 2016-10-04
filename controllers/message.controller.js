@@ -7,6 +7,7 @@ var filterService = require('../services/filter.service');
 function listByQueue(req, res) {
 
     var sql = filterService(req.query, req.params.queue);
+    sql.whereParams.unshift(req.params.queue);
 
     log.trace('listing messages for queue:', req.params.queue);
     messageDao.listByQueue(function (err, messageList) {

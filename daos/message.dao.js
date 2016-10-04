@@ -3,7 +3,8 @@
 function listByQueue(cb, connection, sql) {
     var messageList = [];
     console.log('sql', sql);
-    connection.query(sql, function (error, rows, fields) {
+
+    connection.query(sql.query, sql.whereParams, function (error, rows, fields) {
         if (!error) {
 
             if (rows.length) {
