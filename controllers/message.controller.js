@@ -88,7 +88,32 @@ function deleteMessage(req, res) {
 
 }
 
+function getById(req, res) {
+
+    var queueName = req.queue.getName();
+
+    if (req.params && req.params.message_id) {
+        var id = req.params.message_id;
+
+        messageDao.getById(function (err, result) {
+            if (!err) {
+                if(result) {
+                    res.send(200, result);
+                } else {
+                    res.send(404);
+                }
+            } else {
+                res.send(500);
+            }
+        }, req.dataSource, queueName, id);
+
+    } else {
+        res.send(400, {message: 'missing messageId'})
+    }
+}
+
 module.exports = {
+    getById: getById,
     deleteMessage: deleteMessage,
     listByQueue: listByQueue,
     enqueue: enqueue

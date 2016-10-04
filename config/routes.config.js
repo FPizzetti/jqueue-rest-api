@@ -15,6 +15,7 @@ module.exports = function (server) {
     server.del('/databases/:db/queues/:queue', queueController.deleteByName);
     server.get('/databases/:db/queues/:queue/messages', [queueMiddleware, messageController.listByQueue]);
     server.post('/databases/:db/queues/:queue/messages', [queueMiddleware, messageController.enqueue]);
+    server.get('/databases/:db/queues/:queue/messages/:message_id',[queueMiddleware, messageController.getById]);
     server.del('/databases/:db/queues/:queue/messages/:message_id',[queueMiddleware, messageController.deleteMessage]);
     server.patch('/databases/:db/queues/:queue/messages/:message_id', [queueMiddleware, messageController.update]);
 };

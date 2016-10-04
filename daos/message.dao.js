@@ -26,7 +26,22 @@ function deleteQueue(cb, connection, queue, id) {
     });
 }
 
+function getById(cb, connection, queue, id) {
+    connection.query('SELECT * FROM ?? WHERE id = ?', [queue, id], function (error, rows) {
+        if(error) {
+            cb(error);
+        } else {
+            var result = null;
+            if(rows.length) {
+                result = rows[0];
+            }
+            cb(error, result);
+        }
+    });
+}
+
 module.exports = {
+    getById: getById,
     deleteQueue: deleteQueue,
     listByQueue: listByQueue
 };
