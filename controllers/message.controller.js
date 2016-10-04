@@ -7,7 +7,7 @@ var filterService = require('../services/filter.service');
 function update(req, res) {
 
     if (!req.body.status || (req.body.status != 'buried' && req.body.status != 'ready')) {
-        return res.send(400, {error: 'body should have status with \'buried\' or \'ready\' values'});
+        return res.send(400, {message: 'body should have status with \'buried\' or \'ready\' values'});
     }
 
     var message = {
