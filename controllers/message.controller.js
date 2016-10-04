@@ -2,20 +2,20 @@
 
 var log = require('../services/log.service');
 var messageDao = require('../daos/message.dao');
+var filterService = require('../services/filter.service');
 
 function listByQueue(req, res) {
 
-    var params = req.params;
+    var sql = filterService(req.query, req.params.queue);
 
-    log.trace('listing messages for queue:', params.queue);
-
+    log.trace('listing messages for queue:', req.params.queue);
     messageDao.listByQueue(function (err, messageList) {
         if (!err) {
             res.send(200, messageList);
         } else {
             res.send(500);
         }
-    }, req.dataSource, params);
+    }, req.dataSource, sql);
 }
 
 
