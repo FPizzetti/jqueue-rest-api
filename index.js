@@ -6,7 +6,7 @@ var server = restify.createServer();
 server.use(restify.bodyParser());
 server.use(restify.queryParser());
 
-routes.createRoutes();
+routes.createRoutes(server);
 
 server.listen(6000, function () {
     console.log('jqueue-rest-api listening at port %s', 6000);
