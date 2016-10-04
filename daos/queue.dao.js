@@ -3,12 +3,16 @@
 function list(cb, connection) {
     var queueList = [];
     connection.query('SHOW TABLES', function (error, rows, fields) {
-        for (var ix in rows) {
-            queueList.push(Object.keys(rows[ix])[0]);
+        if (rows.length) {
+            var property = Object.keys(rows[0])[0];
+            for (var ix in rows) {
+                queueList.push(rows[ix][property]);
+            }
         }
-        callBack(cb, error, queueList);
+        cb(error, queueList);
     });
 }
+
 
 module.exports = {
     list: list

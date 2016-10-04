@@ -7,7 +7,16 @@ function list(req, res) {
 
     log.trace('listing queues');
 
-    res.send(200, {'test': 'test'});
+    queueDao.list(function (err, list) {
+        if (!err) {
+            res.send(200, list);
+        } else {
+            log.error('error listing queues', err);
+            res.send(500);
+        }
+    }, req.dataSource);
+
+
 }
 
 module.exports = {
