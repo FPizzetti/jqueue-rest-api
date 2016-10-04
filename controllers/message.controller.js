@@ -83,7 +83,34 @@ function enqueue(req, res) {
 
 }
 
+function deleteMessage(req, res) {
+
+    var queueName = req.queue.getName();
+
+    if (req.params && req.params.message_id) {
+        var id = req.params.message_id;
+
+        messageDao.deleteQueue(function (err) {
+            if (!err) {
+                res.send(200);
+            } else {
+                if (err.message.match(/ER_BAD_TABLE_ERROR/)) {
+                    res.send(200);
+                } else {
+                    log.error('error deleting message', err);
+                    res.send(500);
+                }
+            }
+        }, req.dataSource, queueName, id);
+
+    } else {
+        res.send(400, {message: 'missing messageId'})
+    }
+
+}
+
 module.exports = {
+    deleteMessage: deleteMessage,
     listByQueue: listByQueue,
     enqueue: enqueue,
     update: update
