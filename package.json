@@ -22,6 +22,9 @@
   },
   "homepage": "https://github.com/FPizzetti/jqueue-rest-api#readme",
   "dependencies": {
+    "bunyan": "^1.8.1",
+    "jqueue": "^0.1.10",
+    "mysql": "^2.11.1",
     "restify": "^4.1.1"
   }
 }
