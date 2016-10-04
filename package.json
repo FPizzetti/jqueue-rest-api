@@ -1,0 +1,27 @@
+{
+  "name": "jqueue-rest-api",
+  "version": "1.0.0",
+  "description": "Rest api to manage jqueue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FPizzetti/jqueue-rest-api.git"
+  },
+  "keywords": [
+    "jqueue",
+    "rest",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FPizzetti/jqueue-rest-api/issues"
+  },
+  "homepage": "https://github.com/FPizzetti/jqueue-rest-api#readme",
+  "dependencies": {
+    "restify": "^4.1.1"
+  }
+}
