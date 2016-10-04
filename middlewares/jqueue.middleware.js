@@ -6,7 +6,7 @@ var databases = require('../config/env.config').databases;
 var jqueueBuffer = {};
 var jqueueBufferSize = 10;
 
-module.export = function (req, res, next) {
+module.exports = function (req, res, next) {
 
     if (req.params && req.params.db) {
         var dbName = req.params.db;

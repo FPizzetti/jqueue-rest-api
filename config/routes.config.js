@@ -1,12 +1,12 @@
 'use strict';
 
-// var dbMiddleware = require('./middlewares/db.middleware');
+var jqueueMiddleware = require('../middlewares/jqueue.middleware');
 var queueController = require('../controllers/queue.controller');
 // var messagesController = require('./controllers/message.controller');
 
 module.exports = function (server) {
 
-    // server.use(dbMiddleware.validate);
+    server.use(jqueueMiddleware);
 
     server.get('/databases/:db/queues', queueController.list);
     // server.get('/databases/:db/queues/:queue', queueController.getByName);

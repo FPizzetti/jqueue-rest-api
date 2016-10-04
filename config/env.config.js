@@ -1,6 +1,6 @@
 'use strict';
 module.exports = {
-    port: 6000,
+    port: 8000,
     databases: {
         devdb: {
             host: '192.168.100.121',
