@@ -6,7 +6,6 @@ module.exports = function (req, res, next) {
         var queueName = req.params.queue;
         req.jqueue.use(queueName, true, function (error, queue) {
             if (!error) {
-                console.log(queue);
                 req.queue = queue;
                 next();
             } else {
