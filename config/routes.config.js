@@ -1,8 +1,5 @@
 'use strict';
 
-function Routes(server) {
-    
-}
+module.exports.createRoutes = function (server) {
 
-Routes.constructor = Routes;
-module.exports = Routes;
+};
