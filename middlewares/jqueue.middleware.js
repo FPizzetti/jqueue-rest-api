@@ -12,7 +12,8 @@ module.export = function (req, res, next) {
         var dbName = req.params.db;
         var jqueue = jqueueBuffer[dbName];
         if (jqueue) {
-            req.jqueue = jqueue;
+            req.jqueue = jqueue.object;
+            req.dataSource = jqueue.dataSource;
             next();
         } else {
             var database = databases[dbName];
@@ -23,8 +24,9 @@ module.export = function (req, res, next) {
                 if (bufferKeys.length >= jqueueBufferSize) {
                     delete jqueueBuffer[bufferKeys[0]];
                 }
-                jqueueBuffer[dbName] = jqueue;
+                jqueueBuffer[dbName] = {object: jqueue, dataSource: dataSource};
                 req.jqueue = jqueue;
+                req.dataSource = dataSource;
                 next();
             } else {
                 res.send(404, {message: 'database ' + dbName + ' not found'});
