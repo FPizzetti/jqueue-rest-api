@@ -11,7 +11,7 @@ module.exports = function (server) {
 
     server.get('/databases/:db/queues', queueController.list);
     server.get('/databases/:db/queues/:queue', [queueMiddleware, queueController.getByName]);
-    server.put('/databases/:db/queues/:queue', queueController.create);
+    server.put('/databases/:db/queues/:queue', [queueController.deleteByName, queueController.create]);
     server.del('/databases/:db/queues/:queue', queueController.deleteByName);
     server.get('/databases/:db/queues/:queue/messages', [queueMiddleware, messageController.listByQueue]);
     server.post('/databases/:db/queues/:queue/messages', [queueMiddleware, messageController.enqueue]);
