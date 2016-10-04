@@ -13,8 +13,8 @@ module.exports = function (server) {
     server.get('/databases/:db/queues/:queue', [queueMiddleware, queueController.getByName]);
     server.put('/databases/:db/queues/:queue', queueController.create);
     server.del('/databases/:db/queues/:queue', queueController.deleteByName);
-    server.get('/databases/:db/queues/:queue/messages', messageController.listByQueue);
-    // server.post('/databases/:db/queues/:queue/messages', messagesController.enqueue);
+    server.get('/databases/:db/queues/:queue/messages', [queueMiddleware, messageController.listByQueue]);
+    server.post('/databases/:db/queues/:queue/messages', [queueMiddleware, messagesController.enqueue]);
     // server.delete('/databases/:db/queues/:queue/messages/:message_id', messagesController.remove);
     // server.patch('/databases/:db/queues/:queue/messages/:message_id', messagesController.update);
 };
