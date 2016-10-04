@@ -98,7 +98,7 @@ function deleteMessage(req, res) {
                     res.send(200);
                 } else {
                     log.error('error deleting message', err);
-                    res.send(500);
+                    res.send(500, err);
                 }
             }
         }, req.dataSource, queueName, id);
@@ -118,13 +118,13 @@ function getById(req, res) {
 
         messageDao.getById(function (err, result) {
             if (!err) {
-                if(result) {
+                if (result) {
                     res.send(200, result);
                 } else {
-                    res.send(404);
+                    res.send(404, {message: 'message ' + id + ' not found'});
                 }
             } else {
-                res.send(500);
+                res.send(500, err);
             }
         }, req.dataSource, queueName, id);
 
