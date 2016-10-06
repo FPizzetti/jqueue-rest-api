@@ -1,6 +1,32 @@
 'use strict';
 
-module.exports = function (query) {
+function assembleUpdate(query, properties) {
+    var paramsSet = assembleSets(properties);
+    var paramsWhere = assembleWheres(query);
+    //var params
+    return {query: assembleUpdateSQL(params.wheres, properties, params.whereParams), whereParams: params.whereParams};
+}
+
+function assembleSelect(query) {
+    var params = assembleWheres(query);
+    return {query: assembleSelectSQL(params.wheres), whereParams: params.whereParams};
+}
+
+function assembleSets(properties) {
+    var sets = [];
+    var setParams = [];
+
+    if (properties.status) {
+        addSet(sets, setParams, 'status', properties.status);
+    }
+
+    if (properties.date_time) {
+        addSet(sets, setParams, 'date_time', properties.date_time);
+    }
+    return {sets: sets, setParams: setParams};
+}
+
+function assembleWheres(query) {
     var wheres = [];
     var whereParams = [];
 
@@ -24,8 +50,12 @@ module.exports = function (query) {
         addWhere(wheres, whereParams, 'modified_at', '<=', query.modified_at_end);
     }
 
-    return {query: assembleSQL(wheres), whereParams: whereParams};
-};
+    if (query.data) {
+        addWhere(wheres, whereParams, 'data', ' like ', '%' + query.data + '%');
+    }
+
+    return {wheres: wheres, whereParams: whereParams};
+}
 
 function addWhere(wheres, whereParams, field, operator, value) {
     wheres = wheres || [];
@@ -34,10 +64,30 @@ function addWhere(wheres, whereParams, field, operator, value) {
     wheres.push(field + ' ' + operator + ' ?');
 }
 
-function assembleSQL(wheres) {
+function addSet(sets, setParams, field, value) {
+    sets = sets || [];
+    setParams = setParams || [];
+    setParams.push(value);
+    sets.push(field + ' = ' + ' ?');
+}
+
+function assembleUpdateSQL(sets) {
+    var sql = 'UPDATE ??';
+    if (sets && sets.length) {
+        sql += ' SET ' + sets.join(' , ');
+    }
+    return sql;
+}
+
+function assembleSelectSQL(wheres) {
     var sql = 'SELECT * FROM ??';
     if (wheres && wheres.length) {
         sql += ' WHERE ' + wheres.join(' AND ');
     }
     return sql;
 }
+
+module.exports = {
+    assembleUpdate: assembleUpdate,
+    assembleSelect: assembleSelect
+};

@@ -21,4 +21,7 @@ module.exports = function (server) {
     server.get('/databases/:db/queues/:queue/messages/:message_id', [jqueueMiddleware, queueMiddleware, messageController.getById]);
     server.del('/databases/:db/queues/:queue/messages/:message_id', [jqueueMiddleware, queueMiddleware, messageController.deleteMessage]);
     server.patch('/databases/:db/queues/:queue/messages/:message_id', [jqueueMiddleware, queueMiddleware, messageController.update]);
+
+    //massive update
+    server.patch('/databases/:db/queues/:queue/messages', [jqueueMiddleware, queueMiddleware, messageController.massiveUpdate]);
 };

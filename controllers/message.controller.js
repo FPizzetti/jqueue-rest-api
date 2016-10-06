@@ -4,6 +4,8 @@ var log = require('../services/log.service');
 var messageDao = require('../daos/message.dao');
 var filterService = require('../services/filter.service');
 
+var dateFormat = require('dateformat');
+
 function update(req, res) {
 
     if (!req.body.status || (req.body.status != 'buried' && req.body.status != 'ready')) {
@@ -25,9 +27,35 @@ function update(req, res) {
     }, req.dataSource, message);
 }
 
+function massiveUpdate(req, res) {
+    if (!req.body.status || (req.body.status != 'buried' && req.body.status != 'ready')) {
+        return res.send(400, {message: 'body should have status with \'buried\' or \'ready\' values'});
+    }
+
+    if (req.body.date_time) {
+        var date = new Date(req.body.date_time);
+        if (isNaN(date.getTime())) {
+            return res.send(400, {message: 'invalid date_time'});
+        } else {
+            req.body.date_time = dateFormat(date, "yyyy-m-dd HH:mm:ss");
+        }
+    }
+
+    var sql = filterService.assembleUpdate(req.query, req.body);
+    sql.whereParams.unshift(req.params.queue);
+
+    messageDao.massiveUpdate(function (err) {
+        if (!err) {
+            res.send(204);
+        } else {
+            res.send(500);
+        }
+    }, req.dataSource, sql);
+}
+
 function listByQueue(req, res) {
 
-    var sql = filterService(req.query, req.params.queue);
+    var sql = filterService.assembleSelect(req.query);
     sql.whereParams.unshift(req.params.queue);
 
     log.trace('listing messages for queue:', req.params.queue);
@@ -138,5 +166,6 @@ module.exports = {
     deleteMessage: deleteMessage,
     listByQueue: listByQueue,
     enqueue: enqueue,
-    update: update
+    update: update,
+    massiveUpdate: massiveUpdate
 };

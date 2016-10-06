@@ -6,6 +6,14 @@ function update(cb, connection, message) {
     });
 }
 
+function massiveUpdate(cb, connection, sql) {
+    console.log('sql', sql);
+    connection.query(sql.query, sql.whereParams, function (error) {
+        console.log('err', error);
+        cb(error);
+    });
+}
+
 function listByQueue(cb, connection, sql) {
     var messageList = [];
     console.log('sql', sql);
@@ -34,11 +42,11 @@ function deleteQueue(cb, connection, queue, id) {
 
 function getById(cb, connection, queue, id) {
     connection.query('SELECT * FROM ?? WHERE id = ?', [queue, id], function (error, rows) {
-        if(error) {
+        if (error) {
             cb(error);
         } else {
             var result = null;
-            if(rows.length) {
+            if (rows.length) {
                 result = rows[0];
             }
             cb(error, result);
@@ -50,5 +58,6 @@ module.exports = {
     update: update,
     getById: getById,
     deleteQueue: deleteQueue,
-    listByQueue: listByQueue
+    listByQueue: listByQueue,
+    massiveUpdate: massiveUpdate
 };
