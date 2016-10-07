@@ -8,6 +8,11 @@ var databaseController = require('../controllers/database.controller');
 
 module.exports = function (server) {
 
+    server.use(function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        next();
+    });
+
     server.get('/databases', databaseController.list);
     server.get('/databases/:db', [jqueueMiddleware, databaseController.getByName]);
 
