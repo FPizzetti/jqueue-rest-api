@@ -1,10 +1,18 @@
 'use strict';
 
+var log = require('../services/log.service');
+
 function assembleUpdate(query, properties) {
+
+    log.trace('assemble update', query, properties);
+
     var paramsSet = assembleSets(properties);
     var paramsWhere = assembleWheres(query);
-    //var params
-    return {query: assembleUpdateSQL(params.wheres, properties, params.whereParams), whereParams: params.whereParams};
+
+    return {
+        query: assembleUpdateSQL(paramsSet.sets, paramsWhere.wheres),
+        whereParams: paramsSet.setParams.concat(paramsWhere.whereParams)
+    };
 }
 
 function assembleSelect(query) {
@@ -54,6 +62,10 @@ function assembleWheres(query) {
         addWhere(wheres, whereParams, 'data', ' like ', '%' + query.data + '%');
     }
 
+    if (query.id) {
+        addWhere(wheres, whereParams, 'id', ' = ', query.id);
+    }
+
     return {wheres: wheres, whereParams: whereParams};
 }
 
@@ -71,10 +83,13 @@ function addSet(sets, setParams, field, value) {
     sets.push(field + ' = ' + ' ?');
 }
 
-function assembleUpdateSQL(sets) {
+function assembleUpdateSQL(sets, wheres) {
     var sql = 'UPDATE ??';
     if (sets && sets.length) {
         sql += ' SET ' + sets.join(' , ');
+    }
+    if (wheres && wheres.length) {
+        sql += ' WHERE ' + wheres.join(' AND ');
     }
     return sql;
 }
