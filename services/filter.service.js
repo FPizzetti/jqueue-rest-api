@@ -15,6 +15,18 @@ function assembleUpdate(query, properties) {
     };
 }
 
+function assembleDelete(query) {
+
+    log.trace('assemble delete', query);
+
+    var paramsWhere = assembleWheres(query);
+
+    return {
+        query: assembleDeleteSQL(paramsWhere.wheres),
+        whereParams: paramsWhere.whereParams
+    };
+}
+
 function assembleSelect(query) {
     var params = assembleWheres(query);
     return {query: assembleSelectSQL(params.wheres), whereParams: params.whereParams};
@@ -94,6 +106,14 @@ function assembleUpdateSQL(sets, wheres) {
     return sql;
 }
 
+function assembleDeleteSQL(wheres) {
+    var sql = 'DELETE FROM ??';
+    if (wheres && wheres.length) {
+        sql += ' WHERE ' + wheres.join(' AND ');
+    }
+    return sql;
+}
+
 function assembleSelectSQL(wheres) {
     var sql = 'SELECT * FROM ??';
     if (wheres && wheres.length) {
@@ -104,5 +124,6 @@ function assembleSelectSQL(wheres) {
 
 module.exports = {
     assembleUpdate: assembleUpdate,
+    assembleDelete: assembleDelete,
     assembleSelect: assembleSelect
 };

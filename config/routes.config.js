@@ -29,4 +29,6 @@ module.exports = function (server) {
 
     //massive update
     server.patch('/databases/:db/queues/:queue/messages', [jqueueMiddleware, queueMiddleware, messageController.massiveUpdate]);
+    //massive delete
+    server.del('/databases/:db/queues/:queue/messages', [jqueueMiddleware, queueMiddleware, messageController.massiveDelete]);
 };

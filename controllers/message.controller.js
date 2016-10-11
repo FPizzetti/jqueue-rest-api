@@ -53,6 +53,21 @@ function massiveUpdate(req, res) {
     }, req.dataSource, sql);
 }
 
+function massiveDelete(req, res) {
+
+    var sql = filterService.assembleDelete(req.query, req.body);
+    sql.whereParams.unshift(req.params.queue);
+
+    messageDao.massiveDelete(function (err) {
+        if (!err) {
+            res.send(200);
+        } else {
+            res.send(500);
+        }
+    }, req.dataSource, sql);
+}
+
+
 function listByQueue(req, res) {
 
     var sql = filterService.assembleSelect(req.query);
@@ -167,5 +182,6 @@ module.exports = {
     listByQueue: listByQueue,
     enqueue: enqueue,
     update: update,
-    massiveUpdate: massiveUpdate
+    massiveUpdate: massiveUpdate,
+    massiveDelete: massiveDelete
 };

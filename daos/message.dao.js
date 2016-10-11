@@ -7,7 +7,15 @@ function update(cb, connection, message) {
 }
 
 function massiveUpdate(cb, connection, sql) {
-    console.log('sql', sql);
+    console.log('UPDATE sql:', sql);
+    connection.query(sql.query, sql.whereParams, function (error) {
+        console.log('err', error);
+        cb(error);
+    });
+}
+
+function massiveDelete(cb, connection, sql) {
+    console.log('delete sql', sql);
     connection.query(sql.query, sql.whereParams, function (error) {
         console.log('err', error);
         cb(error);
@@ -59,5 +67,6 @@ module.exports = {
     getById: getById,
     deleteQueue: deleteQueue,
     listByQueue: listByQueue,
-    massiveUpdate: massiveUpdate
+    massiveUpdate: massiveUpdate,
+    massiveDelete: massiveDelete
 };
